@@ -38,19 +38,16 @@
     return age > STALE_YEARS ? " · " + (t.staleLabel || "uuring lõppenud") : "";
   }
 
-  /* RTA-ga seotud aruanne: vähemalt üks RTA indikaator (js/hspa.js `rta`) viitab sellele tabelile või
-     selle õdetabelile (õdetabelid on Üldvaates üks rida) või tabel on loendis TAI.HSPA.rtaTables. Näidatakse sama pastelse pillina
-     mis HSPA-vaates. */
-  var rtaFamilies = null;
-  function isRtaTable(t) {
-    if (!rtaFamilies) {
-      rtaFamilies = {};
-      ((TAI.HSPA && TAI.HSPA.rtaTables) || []).forEach(function (code) { if (TAI.getTable(code)) rtaFamilies[primaryOf(code)] = true; });
-      ((TAI.HSPA && TAI.HSPA.sections) || []).forEach(function (s) {
-        s.items.forEach(function (it) { if (it.rta && it.table && TAI.getTable(it.table)) rtaFamilies[primaryOf(it.table)] = true; });
-      });
-    }
-    return !!rtaFamilies[primaryOf(t.code)];
+  /* RTA märk menüüreal (19.11.2026): ainult allikapõhine täpne vastavus (js/rta.js, RTA põhidokument ja programmid 2026–2029):
+     „RTA · <programm>, <periood>“, programmi täisnimi ja mõõdik hiirevihjes. Varasem memo-põhine pill (HSPA `rta` + rtaTables)
+     jääb ainult HSPA-vaate indikaatoriridadele (hspaMarks). */
+  function rtaPrefixHtml(t) {
+    var r = TAI.rtaOf && TAI.rtaOf(primaryOf(t.code));
+    return r ? '<span class="hspa-rta">RTA</span> ' + esc(r.short) + ", " : "";
+  }
+  function rowHint(t) {
+    var r = TAI.rtaOf && TAI.rtaOf(primaryOf(t.code));
+    return TAI.describe(t) + (r ? "\n\n" + r.hint : "");
   }
 
   /* Periood omaette <span>-is, et viimase aasta kontroll (TAI.checkLatestYears, core.js) saaks ainult selle teksti
@@ -60,13 +57,12 @@
   }
 
   function datasetRow(t) {
-    var rtaMark = isRtaTable(t) ? ' · <span class="hspa-rta">RTA</span>' : "";
     return (
       '<li class="dataset" data-code="' + esc(t.code) + '">' +
-        '<button type="button" class="dataset__button" aria-controls="content" title="' + esc(TAI.describe(t)) + '" ' +
+        '<button type="button" class="dataset__button" aria-controls="content" title="' + esc(rowHint(t)) + '" ' +
             'aria-labelledby="ds-title-' + esc(t.code) + '" aria-describedby="ds-desc-' + esc(t.code) + '">' +
           '<span class="dataset__title" id="ds-title-' + esc(t.code) + '">' + esc(t.familyTitle || t.title) + "</span>" +
-          '<span class="dataset__desc" id="ds-desc-' + esc(t.code) + '">' + esc(t.country ? t.country + ", " : "") + periodHtml(t) + rtaMark + "</span>" +
+          '<span class="dataset__desc" id="ds-desc-' + esc(t.code) + '">' + rtaPrefixHtml(t) + esc(t.country ? t.country + ", " : "") + periodHtml(t) + "</span>" +
           '<span class="dataset__chevron" aria-hidden="true">›</span>' +
         "</button>" +
         // 19.11.2026: allikalinki menüüs pole (allikas on aruande päises ja jaluses); valitud real vaatamiste arv ja olek
@@ -329,7 +325,7 @@
       var y = li.querySelector(".dataset__years");
       if (y) y.textContent = TAI.yearRangeLabel(t) + staleSuffix(t);
       var btn = li.querySelector(".dataset__button");
-      if (btn) btn.title = TAI.describe(t);
+      if (btn) btn.title = li.classList.contains("dataset--hspa") ? TAI.describe(t) : rowHint(t);   // tavareal ka RTA vihje
     });
   };
 

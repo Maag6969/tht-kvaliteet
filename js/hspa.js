@@ -249,8 +249,8 @@
         data: { status: "file", src: "SoM elanikkonnauuring (kohalik fail, veel lisamata)" } }
     ],
 
-    /* RTA-ga seotud tabelid, mis ei ole HSPA indikaator: saavad RTA pilli nii Üldvaates kui ka
-       HSPA-vaate rühmas „Muud näitajad" (js/app.js isRtaTable). HSPA indikaatorite RTA märge tuleb nende `rta` väljast. */
+    /* 19.11.2026: kasutuseta. Menüüridade RTA märk tuleb nüüd js/rta.js-ist (RTA põhidokument ja programmid 2026–2029);
+       HSPA indikaatorite RTA märge tuleb endiselt nende `rta` väljast. Jäetud ajaloo jaoks (memo märkis selle tabeli RTA-ks). */
     rtaTables: ["EUROSTAT-PRVT"],
 
     /* Kvaliteediploki koodita tabelid → HSPA-vaate lõppu. Tabel, mida ei ole ei
