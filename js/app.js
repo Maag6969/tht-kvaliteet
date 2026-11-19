@@ -527,6 +527,8 @@
 
   function renderEmpty() {
     view = null;
+    requestId++;   // pooleli aruande laadimise tulemus jäetakse kõrvale (nt „Tagasi“ avalehele enne laadimise lõppu)
+    TAI.getTables().forEach(function (t) { setRowStatus(t.code, null); });
     setAiEnabled(false, "Vali enne andmestik");
     clearAiNotice();
     document.title = BASE_TITLE;
@@ -891,11 +893,12 @@
     if (!dpip || !dpip.requestWindow) { showAiToast(text); return; }
     dpip.requestWindow({ width: 380, height: 200 }).then(function (pip) {
       var d = pip.document;
-      d.head.innerHTML = '<meta charset="utf-8"><title>Juhis</title><style>' +
-        "body{margin:0;padding:16px;font:500 16px/1.4 Roboto,system-ui,sans-serif;color:#0e0f21;background:#F0F8FF;border-left:6px solid #4B7DFF;box-sizing:border-box;height:100vh}" +
-        "p{margin:0 0 12px}button{font:inherit;font-size:14px;font-weight:500;cursor:pointer;padding:5px 18px;border:0;border-radius:999px;background:#4B7DFF;color:#fff}" +
-        "</style>";
+      // Stiil CSSOM-iga (mitte <style> ega style="…"), et range CSP seda ei blokeeriks
+      d.head.innerHTML = '<meta charset="utf-8"><title>Juhis</title>';
       d.body.innerHTML = "<p></p><button type=\"button\">Sulge</button>";
+      d.body.style.cssText = "margin:0;padding:16px;font:500 16px/1.4 Roboto,system-ui,sans-serif;color:#0e0f21;background:#F0F8FF;border-left:6px solid #4B7DFF;box-sizing:border-box;height:100vh";
+      d.body.querySelector("p").style.cssText = "margin:0 0 12px";
+      d.body.querySelector("button").style.cssText = "font:inherit;font-size:14px;font-weight:500;cursor:pointer;padding:5px 18px;border:0;border-radius:999px;background:#4B7DFF;color:#fff";
       d.body.querySelector("p").textContent = text;
       d.body.querySelector("button").addEventListener("click", function () {
         // PiP sulgemisel läheb fookus näidikulaua aknale ja AI-aken jääb selle taha → toome AI-akna tagasi ette
