@@ -1,0 +1,23 @@
+# PDF-failid
+*.pdf
+
+# Arendus- ja abifailid
+.claude/
+tests/
+tools/
+
+# Vaatamiste loenduri halduskood
+.counter-admin-key*
+
+# Töödokumendid ja metoodika
+TASKS.md
+TASKS-ARHIIV.md
+TEGEVUSKAVA.md
+disain.md
+tookindlus.md
+PARINGUD.md
+HSPA-KAARDISTUS-KONTROLL.md
+M2-SOOVITUSED-M3-parandustest.md
+TURVAULEVAATUS.md
+analuusid/
+js/tables/README-NAIDIS.js

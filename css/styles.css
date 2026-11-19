@@ -1,0 +1,562 @@
+/* Tervishoiuteenuste kvaliteedi näidikulaud — stiilid. */
+
+/* Roboto ise hostitud: muutuv font, üks fail katab kaalud 300–700. latin-ext sisaldab eesti š ja ž.
+   Litsents: fonts/OFL.txt. Google Fonts'i ei kasutata (külastaja IP ei lähe Google'ile). */
+@font-face {
+  font-family: "Roboto"; font-style: normal; font-weight: 300 700; font-stretch: 100%; font-display: swap;
+  src: url("../fonts/roboto-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Roboto"; font-style: normal; font-weight: 300 700; font-stretch: 100%; font-display: swap;
+  src: url("../fonts/roboto-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: light;
+
+  /* põhitoonid */
+  --som-keskmine-sinine: #4B7DFF;
+  --som-tumesinine:      #181E54;
+
+  --tekst-1:        #0e0f21;
+  --tekst-pealkiri: #181E54;
+  --tekst-2:        #52555e;
+  --taust:          #ffffff;
+  --joon:           #e7eaea;
+  --sinine-15:      #E4ECFF;
+  --positiivne:     #677c36;
+  --negatiivne:     #c0392b;
+
+  /* eristada vasaku loendi valiku-sinist (--sinine-15, keskmise sinise
+     15%) aruande enda sisurõhutustest (pillid, callout, "Valitud lõige"). Stiiliraamatu eraldi
+     "Helesinine" toon (#9ad3fc, roheka alatooniga, "soojem" kui keskmine sinine) samal 15%
+     läbipaistvusvalemil, mida --sinine-15 juba kasutab. */
+  --som-helesinine: #9ad3fc;
+  --helesinine-15:  #F0F8FF;
+  --alakomponent-taust: #E3F3F5;   /* HSPA alakomponendi rea hele rohekassinine taust */
+  --rta-taust: #FFEFC2;            /* RTA märke pastelne kollakas taust */
+
+  --series-1: #4B7DFF;
+  --series-2: #d4621a;   /* raamatu oranž #f17a29 tumendatud: graafikuelemendi kontrast ≥ 3:1 */
+  --oranz-tekst: #b54d0f; /* HSPA-vaate „pole veel näidikulaual" / „arendamist vajav"
+                             tumedama oranžiga; teksti kontrast valgel ~5,2:1 (WCAG AA) — --series-2 jääks alla 4,5:1 */
+
+  /* 5-astmelise hinnanguskaala (Hea…Halb + Ei oska öelda) värvid, otsustatud 17.09.2026:
+     roheline→punane skaala + hall, taaskasutades olemasolevaid --positiivne/--negatiivne tokeneid
+     otstes. Vahepealsed toonid on nende helendatud variandid, "Ei oska öelda" on neutraalne hall. */
+  /* Rühmade võrdluse jooned (vanuserühmad, haridustasemed) (sama mis vt-startpage'is). Fikseeritud järjekord; 7 värvi validaatoriga
+     kontrollitud valgel taustal (06.11.2026: kõrvuti olevate halvim värvipimeduse ΔE 12,1, tavanägemisel 26,6, kontrast ≥ 3:1). */
+  --age-1: #d4621a;
+  --age-2: #2a8fd1;
+  --age-3: #b88a00;
+  --age-4: #7c3fbf;
+  --age-5: #4e9a3a;
+  --age-6: #9b2774;
+  --age-7: #0093a8;
+
+  --hinnang-hea:        var(--positiivne);
+  --hinnang-pigem-hea:  #9fae6e;
+  --hinnang-pigem-halb: #d99a6c;
+  --hinnang-halb:       var(--negatiivne);
+  --hinnang-eos:        #8a8f98;
+
+  --skeleton: #f1f3f3;
+  --radius:   12px;
+  --pill:     999px;
+  --font: "Roboto", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--taust);
+  color: var(--tekst-1);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a { color: var(--tekst-pealkiri); }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--som-keskmine-sinine);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+.only-narrow { display: none; }
+@media (max-width: 767px) {
+  .only-wide { display: none; }
+  .only-narrow { display: inline; }
+}
+
+.skip-link {
+  position: absolute; left: 16px; top: -48px; z-index: 10;
+  background: var(--som-tumesinine); color: #fff; padding: 8px 16px; border-radius: var(--pill);
+}
+.skip-link:focus { top: 8px; }
+
+/* ---- päis ---------------------------------------------------------- */
+
+.site-header {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 4px 24px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--joon);
+}
+.site-header h1 {
+  margin: 0;
+  color: var(--tekst-pealkiri);
+  font-weight: 500;
+  font-size: 2rem;          /* 1.6rem × 1,25 */
+  line-height: 1.25;
+}
+.site-header__views { margin: 2px 0 0; font-size: 0.875rem; color: var(--tekst-2); font-variant-numeric: tabular-nums; }
+.site-header__views[hidden] { display: none; }
+
+/* ---- paneelid ------------------------------------------------------ */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) 2fr;
+  min-height: calc(100vh - 160px);
+}
+
+/* Laial ekraanil on loend kleepuv: leht kerib tervikuna (hea printimisel),
+   aga loend jääb ekraanile ja kerib vajadusel ise. Eraldusjoon on sisupaneelil, et see jookseks kogu kõrguses. */
+.panel-list {
+  padding: 8px 0;
+  position: sticky; top: 0; align-self: start;
+  max-height: 100vh; overflow-y: auto;
+}
+
+.panel-content {
+  border-left: 1px solid var(--joon);
+  padding: 24px 32px 48px;
+  min-width: 0;
+}
+
+/* ---- loendi rida --------------------------------------------------- */
+
+.dataset-list { list-style: none; margin: 0; padding: 0; }
+
+/* Rühmapealkiri ("Rahvusvaheline statistika" / "Eesti statistika") — :
+   heledam stiiliraamatu sinine, sama suurus, mis .dataset__title'il praegu ON (1.05rem, enne
+   allpool olevat 12p-muudatust) — rühmapealkiri jääb seega item-pealkirjadest veidi suuremaks. */
+.dataset-group-heading {
+  color: var(--som-keskmine-sinine); font-weight: 500; font-size: 1.05rem; line-height: 1.25;
+  /* Tihendatud veelgi: 20/8 → 16/6 → 11/4. */
+  margin: 0; padding: 11px 20px 4px 24px;
+}
+.dataset-group-heading:first-child { padding-top: 8px; }
+
+.dataset {
+  position: relative;
+  border-bottom: 1px solid var(--joon);
+}
+.dataset:last-child { border-bottom: none; }
+
+.dataset::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+  background: transparent;
+}
+.dataset.is-active { background: var(--sinine-15); }
+.dataset.is-active::before { background: var(--som-keskmine-sinine); }
+
+.dataset__button {
+  /* Tihendatud veelgi: 16/4 → 13/3 → 9/2. */
+  display: grid; grid-template-columns: 1fr auto; gap: 1px 12px; align-items: center;
+  width: 100%;
+  padding: 9px 20px 2px 24px;
+  background: none; border: none; text-align: left; cursor: pointer;
+  font: inherit; color: inherit;
+}
+.dataset__button:hover .dataset__title { text-decoration: underline; }
+.dataset__button:focus-visible { outline-offset: -3px; }
+
+.dataset__title {
+  /* 12p bold, praegune värv. line-height tihendatud (1.5 → 1.2), et
+     ühereaine pealkiri ei jätaks üleliigset "õhku" enda ümber. */
+  grid-column: 1; color: var(--tekst-pealkiri); font-weight: 700; font-size: 1rem; line-height: 1.2;
+}
+.dataset__desc { grid-column: 1; color: var(--tekst-2); font-size: 0.833rem; line-height: 1.2; }
+.dataset__chevron {
+  grid-column: 2; grid-row: 1 / span 2;
+  color: var(--som-tumesinine); font-size: 1.6rem; line-height: 1;
+}
+
+.dataset__footer {
+  /* Allikas-rida 9p, praegune värv; tihendatud veelgi 2. voorus
+     (2/16 → 1.6/13 → 1/8), line-height 1.5 → 1.2. */
+  display: flex; flex-wrap: wrap; align-items: center; gap: 2px 16px;
+  padding: 1px 20px 8px 24px;
+  font-size: 0.75rem; color: var(--tekst-2); line-height: 1.2;
+}
+.dataset__views { font-variant-numeric: tabular-nums; }
+.dataset__views[hidden] { display: none; }
+.dataset__status { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ---- HSPA-vaade –-----------------------------------------------
+   Lüliti = üks nupp (sama ümar kontuurnupp mis „Analüüsi AI-ga" nupud, vt .ai-box__btn); alamrühma
+   pealkiri; hallid read = indikaatorid, mida näidikulaual veel pole (ei avane). */
+.list-toolbar { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 20px 6px 24px; }
+.view-toggle.is-active { background: var(--som-keskmine-sinine); color: #fff; }
+.hspa-flag { color: var(--oranz-tekst); font-weight: 500; font-style: italic; }
+/* Õdetabelite lõike lüliti aruande päises (04.11.2026) — sama nupustiil mis vaate nuppudel */
+.sibling-switch { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0 0 14px; }
+/* ❤️ strateegiline põhimõõdik — helesinisel taustal, sama toon mis .pill */
+.hspa-strategic {
+  background: var(--helesinine-15); color: var(--som-tumesinine);
+  border-radius: var(--pill); padding: 0 7px; white-space: nowrap;
+}
+/* RTA (Rahvastiku tervise arengukava) märge: pastelne kollakas ümmargune taust, et RTA-ga seotud read eristuksid kiiresti
+  . Kollakas, sest sinine (strateegiline), rohekassinine (alakomponent) ja roheline (võrdlusnupud)
+   on juba kasutusel. Tumesinine kiri pastelsel taustal: kontrast > 12:1. */
+.hspa-rta {
+  background: var(--rta-taust); color: var(--som-tumesinine); font-weight: 500;
+  border-radius: var(--pill); padding: 0 7px; white-space: nowrap;
+}
+/* Alakomponendi / alarühma rida: suurem kiri (0.833 → 0.92rem), tihe vahe komponendi
+   reaga ja hele rohekassinine taust (eristub loendi valiku-sinisest --sinine-15). */
+.dataset-subheading {
+  margin: 0; padding: 4px 20px 4px 24px;
+  background: var(--alakomponent-taust);
+  color: var(--tekst-2); font-weight: 500; font-size: 0.92rem; line-height: 1.25;
+}
+.dataset-group-heading:has(+ .dataset-subheading) { padding-bottom: 3px; }
+.dataset-list + .dataset-subheading { margin-top: 6px; }
+.list-note { margin: 0; padding: 2px 20px 6px 24px; font-size: 0.75rem; color: var(--tekst-2); line-height: 1.3; }
+.dataset__static { display: grid; gap: 1px; padding: 9px 20px 8px 24px; }
+.dataset--missing .dataset__title { color: var(--tekst-2); font-weight: 500; }
+.dataset__status.is-error { color: var(--negatiivne); font-weight: 500; }
+
+.spinner {
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid var(--joon); border-top-color: var(--som-keskmine-sinine);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- nupud ---------------------------------------------------------- */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--font); font-size: 19px; font-weight: 700; line-height: 1.2;
+  background: var(--som-keskmine-sinine); color: #fff;
+  border: none; border-radius: var(--pill);
+  padding: 10px 24px; cursor: pointer; text-decoration: none;
+}
+.btn:hover { filter: brightness(0.94); }
+.btn:disabled { opacity: 0.6; cursor: progress; }
+
+/* ---- ümarad sildid -------------------------------------------------- */
+
+.pill {
+  display: inline-block;
+  background: var(--helesinine-15); color: var(--som-tumesinine);
+  font-size: 0.8rem; font-weight: 500; line-height: 1.4;
+  padding: 3px 12px; border-radius: var(--pill);
+}
+/* ---- kuvamisala ----------------------------------------------------- */
+
+.back-link { display: none; margin-bottom: 16px; font-size: 0.9rem; }
+
+.empty-state { max-width: 560px; padding-top: 24px; }
+.empty-state h2 { color: var(--tekst-pealkiri); font-weight: 500; font-size: 1.35rem; margin: 0 0 12px; }
+.empty-state p { color: var(--tekst-2); margin: 0 0 12px; }
+.empty-state ol { color: var(--tekst-2); margin: 0 0 12px; padding-left: 1.4em; }
+.empty-state li { margin: 0 0 4px; }
+
+.module__status { font-size: 0.875rem; color: var(--tekst-2); margin: 0; }
+.module__status:empty { display: none; }
+.module__status a { color: inherit; }
+.module__status--error { color: var(--negatiivne); font-weight: 500; }
+.module__head h2 {
+  color: var(--tekst-pealkiri); font-weight: 500; font-size: 1.6rem; line-height: 1.25;
+  margin: 8px 0 4px;
+}
+.module__head h2:focus { outline: none; }
+.module__subtitle { color: var(--tekst-2); margin: 0 0 12px; }
+/* Mooduli ülemine rida: staatusrida väiksemas kirjas + AI-nupud selle järel samal real;
+   kitsas aknas murduvad nupud järgmisele reale. */
+.module__topbar { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 4px 14px; margin: 0 0 4px; }
+/* staatustekst võib murduda kaheks reaks, AI-nupud jäävad samale reale paremale */
+.module__topbar .module__status { font-size: 0.78rem; line-height: 1.45; flex: 1 1 auto; min-width: 0; }
+.module__topbar .ai-box { flex: 0 0 auto; max-width: 100%; }   /* kitsas aken: silt + nupud murduvad, ei ulatu üle serva */
+/* teate pikk tekst ei tohi AI-kasti (ja ülemise rea) laiust määrata: width 0 + min-width 100% = murdub kasti laiusesse */
+.module__topbar .ai-box__msg { flex-basis: 100%; width: 0; min-width: 100%; }
+@media (max-width: 700px) {
+  .module__topbar { flex-wrap: wrap; }
+  /* Telefon: silt oma reale, kolm nuppu ühes reas, sõrmele vähemalt 40 px kõrged */
+  .module__topbar .ai-box { flex: 1 1 100%; width: 100%; }
+  .module__topbar .ai-box__label { flex-basis: 100%; font-size: 0.875rem; }
+  .module__topbar .ai-box__btn { flex: 1 1 0; min-height: 40px; font-size: 0.875rem; }   /* .module__topbar-eesliide: võidab hilisema põhireegli */
+  .ai-toast__close, .compare-btn, .field select { min-height: 40px; }
+}
+.ai-box { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; }
+.ai-box__label { font-size: 0.875rem; color: var(--tekst-2); }
+.module__topbar .ai-box__label { font-size: 0.78rem; }
+/* AI-nupud: väiksemad, valge kiri sinisel taustal ( — varasemate värvide pöördvariant) */
+.ai-box__btn {
+  font: inherit; font-size: 0.78rem; font-weight: 500; line-height: 1.3; cursor: pointer;
+  padding: 2px 10px; border-radius: 999px;
+  color: #fff; background: var(--som-keskmine-sinine); border: 1px solid var(--som-keskmine-sinine);
+}
+.ai-box__btn:hover, .ai-box__btn:focus-visible { background: var(--som-tumesinine); border-color: var(--som-tumesinine); }
+/* Vaate ja lõike nupud (loendi päis, õdetabelite lüliti) — kontuurnupud, valitud täidetud */
+.view-toggle {
+  font: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer;
+  padding: 4px 14px; border-radius: 999px;
+  color: var(--som-keskmine-sinine); background: var(--taust); border: 1px solid var(--som-keskmine-sinine);
+}
+.view-toggle:hover, .view-toggle:focus-visible { background: var(--som-keskmine-sinine); color: #fff; }
+.ai-box__msg { flex-basis: 100%; margin: 4px 0 0; padding: 10px 14px; font-size: 0.9375rem; font-weight: 500; color: var(--tekst-1); background: var(--helesinine-15); border-left: 4px solid var(--som-keskmine-sinine); border-radius: 4px; }
+.ai-box__msg:empty { display: none; }
+.ai-toast {
+  position: fixed; left: 16px; bottom: 16px; z-index: 50;
+  width: min(380px, 44vw); padding: 14px 16px;
+  background: var(--helesinine-15); color: var(--tekst-1);
+  border: 1px solid var(--som-keskmine-sinine); border-left-width: 6px; border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(24, 30, 84, 0.25);
+}
+.ai-toast[hidden] { display: none; }
+/* 44vw hoiab teate AI-popupi (ekraani parem pool) alt väljas; kitsal ekraanil popupit kõrvale ei jää */
+@media (max-width: 700px) { .ai-toast { width: calc(100vw - 32px); } }
+.ai-toast__text { margin: 0 0 10px; font-size: 1rem; font-weight: 500; line-height: 1.4; }
+.ai-toast__close {
+  font: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer;
+  padding: 4px 16px; border-radius: 999px; border: 0;
+  background: var(--som-keskmine-sinine); color: #fff;
+}
+.ai-box__text { flex-basis: 100%; font: inherit; font-size: 0.8125rem; }
+.module__meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; padding: 0; list-style: none; }
+
+/* filtrid kahes reas: pealmises rippmenüüd, igaühe all selle filtri võrdlusnupp */
+.filters {
+  display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px 24px;
+  margin: 0 0 24px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field > label, .field > legend {
+  font-size: 0.8rem; font-weight: 500; color: var(--tekst-2); padding: 0;
+}
+/* Rippmenüü ja võrdlusnupp on AI-nupust (.ai-box__btn) 10% suuremad: kiri 0.78 → 0.858rem, sisevahe 2/10 → 2.2/11 px */
+.field select {
+  font: inherit; font-size: 0.858rem; line-height: 1.3; color: var(--tekst-1);
+  background: var(--taust); border: 1px solid #c9cfcf; border-radius: var(--pill);
+  padding: 2.2px 26px 2.2px 11px; min-width: 130px; max-width: 100%;
+  appearance: none; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--som-tumesinine) 50%),
+                    linear-gradient(135deg, var(--som-tumesinine) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 55%, calc(100% - 11px) 55%;
+  background-size: 4px 4px; background-repeat: no-repeat;
+}
+/* Võrdlusnupp: pastelne heleroheline, aktiivne tumesinine */
+.compare-btn {
+  align-self: flex-start; margin-top: 4px;
+  font: inherit; font-size: 0.858rem; font-weight: 500; line-height: 1.3; cursor: pointer;
+  padding: 2.2px 11px; border-radius: var(--pill);
+  border: 1px solid #a9d8b5; background: #dff3e3; color: var(--som-tumesinine);
+}
+.compare-btn:hover { border-color: var(--som-tumesinine); }
+.compare-btn[aria-pressed="true"] { background: var(--som-tumesinine); border-color: var(--som-tumesinine); color: #fff; }
+.compare-btn:focus-visible { outline: 3px solid var(--som-keskmine-sinine); outline-offset: 2px; }
+
+.module__body { transition: opacity 0.15s; }
+.module__body.is-loading { opacity: 0.45; pointer-events: none; }
+
+/* KPI-kaardid */
+.kpi-row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+/* Kaardi laius = ülemise rea (silt · aasta + suuna vihje) laius, et see mahuks alati ühele reale
+   05.11.2026). Lõike rida ei laienda kaarti (contain: inline-size), vaid murdub kaardi laiuses. */
+.kpi {
+  flex: 0 0 auto; min-width: 220px; max-width: 100%;
+  border: 1px solid var(--joon); border-radius: var(--radius); padding: 16px 20px;
+}
+.kpi p { margin: 0; }
+/* KPI-kaardi ülarida: silt vasakul, suuna-vihje paremal; kitsas kaardis murdub */
+.kpi__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 4px 10px; }
+.kpi__hint { font-size: 0.72rem; padding: 2px 9px; white-space: nowrap; }
+.kpi__label { font-size: 0.8rem; font-weight: 500; color: var(--tekst-2); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+/* Kitsas KPI rida (telefon, kitsas paan): pikk silt ei mahu ühele reale → murdub, muidu ulatuks kaardist välja */
+.kpi-row { container-type: inline-size; }
+@container (max-width: 540px) { .kpi__label { white-space: normal; } .kpi { flex: 1 1 100%; } }
+.kpi__value { font-size: 2.6rem; font-weight: 300; color: var(--som-tumesinine); line-height: 1.2; margin: 4px 0 !important; font-variant-numeric: tabular-nums; }
+.kpi__value--missing { font-size: 1.1rem; font-weight: 400; color: var(--tekst-2); padding: 12px 0; }
+.kpi__delta { font-size: 0.9rem; font-weight: 500; }
+.kpi__delta.is-worse { color: var(--negatiivne); }
+.kpi__delta.is-better { color: var(--positiivne); }
+.kpi__delta.is-flat { color: var(--tekst-2); }
+.kpi__delta-ref { font-weight: 400; color: var(--tekst-2); }
+.kpi__note { font-size: 0.85rem; color: var(--tekst-2); }
+.chart-note--after { margin: 8px 0 0; }
+.bar-more { margin-top: 8px; }   /* pika tulba „Näita kõiki" (app.js barMoreHtml) */
+
+/* Valitud lõige: KPI kastis ning iga joonise ja andmetabeli pealkirja all,
+   väiksemas kirjas, alati ka vaikevalikute korral (module.js TAI.sliceParts). Mitme KPI-kaardiga tabelil üks rida
+   kogu rea kasti ülaosas (.kpi-block). */
+.slice { font-size: 0.8rem; line-height: 1.4; color: var(--tekst-2); font-weight: 700; }   /* paks kiri:  */
+.chart-slice { margin: 0 0 10px; }
+.kpi__slice { margin: 2px 0 4px !important; contain: inline-size; }
+.kpi-block { border: 1px solid var(--joon); border-radius: var(--radius); padding: 12px 14px 0; margin-bottom: 16px; }
+.kpi-block__slice { margin: 0 0 10px; }
+.kpi-block .kpi-row { margin-bottom: 14px; }
+.data-table__slice { display: block; margin-top: 2px; }
+
+/* callout */
+.callout {
+  background: var(--helesinine-15); border-left: 4px solid var(--som-keskmine-sinine);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px; margin: 0 0 32px; color: var(--tekst-1); max-width: 760px;
+}
+
+/* graafikud */
+.chart-section { margin: 0 0 32px; }
+.chart-section h3 { color: var(--tekst-pealkiri); font-weight: 500; font-size: 1.15rem; margin: 0 0 2px; }
+.callout__note { display: block; margin-top: 8px; font-size: 0.8rem; line-height: 1.4; color: var(--tekst-2); }
+.chart-note { color: var(--tekst-2); font-size: 0.85rem; margin: 0 0 10px; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; list-style: none; margin: 0 0 8px; padding: 0; font-size: 0.85rem; color: var(--tekst-2); }
+.legend li { display: inline-flex; align-items: center; gap: 6px; }
+.legend__swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+/* EL-27 võrdlusrida (hall katkendjoon) — legendis lühike katkendjoon */
+.legend__swatch--ref { width: 18px; height: 0; border-radius: 0; border-top: 2px dashed var(--tekst-2); }
+
+.chart-holder { position: relative; width: 100%; }
+svg.chart { display: block; max-width: 100%; height: auto; overflow: visible; font-family: var(--font); }
+svg.chart .gridline { stroke: var(--joon); stroke-width: 1; }
+svg.chart .baseline { stroke: #c9cfcf; stroke-width: 1; }
+svg.chart .axis-label { fill: var(--tekst-2); font-size: 12px; }
+svg.chart .mark-label {
+  fill: var(--tekst-1); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums;
+  paint-order: stroke; stroke: var(--taust); stroke-width: 4px; stroke-linejoin: round;  /* loetav ka joone peal */
+}
+svg.chart .ref-label { paint-order: stroke; stroke: var(--taust); stroke-width: 4px; stroke-linejoin: round; }
+svg.chart .line-series { fill: none; stroke-width: 2.5; }
+svg.chart .line-dot { stroke: var(--taust); stroke-width: 2; }
+svg.chart .line-reference { stroke: var(--tekst-2); stroke-width: 2; stroke-dasharray: 6 4; }
+svg.chart .line-dot--reference { fill: var(--tekst-2); stroke-width: 1.5; }
+svg.chart .group-label { fill: var(--tekst-2); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+svg.chart .bar-label { fill: var(--tekst-1); font-size: 12.5px; }
+svg.chart .bar-label.is-selected { font-weight: 700; fill: var(--som-tumesinine); }
+svg.chart .ref-line { stroke-width: 1.5; stroke-dasharray: 4 3; }
+svg.chart .ref-label { fill: var(--tekst-2); font-size: 11px; font-weight: 500; }
+svg.chart .mark { cursor: default; }
+svg.chart .mark:focus { outline: none; }
+svg.chart .mark:focus-visible { stroke: var(--som-tumesinine); stroke-width: 3; }
+
+.tooltip {
+  position: absolute; z-index: 5; pointer-events: none;
+  transform: translate(-50%, calc(-100% - 10px));
+  background: var(--som-tumesinine); color: #fff;
+  font-size: 0.8rem; padding: 6px 10px; border-radius: 8px; white-space: nowrap;
+  opacity: 0; transition: opacity 0.1s;
+}
+.tooltip.is-visible { opacity: 1; }
+
+/* andmetabel */
+.data-details { margin: 0 0 8px; }
+.data-details summary {
+  cursor: pointer; color: var(--tekst-pealkiri); font-weight: 500; padding: 8px 0;
+}
+.data-table { width: 100%; max-width: 720px; border-collapse: collapse; font-size: 0.875rem; margin: 12px 0 20px; }
+.data-table caption { text-align: left; color: var(--tekst-2); font-size: 0.85rem; padding-bottom: 6px; }
+.data-table th, .data-table td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--joon); }
+.data-table thead th { color: var(--tekst-2); font-weight: 500; }
+.data-table tbody th { font-weight: 400; }
+.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+.data-table tr.is-total th, .data-table tr.is-total td { font-weight: 500; }
+.data-table__link { font-size: 0.875rem; margin: 0; }
+
+.module__footnotes {
+  margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--joon);
+  font-size: 0.8rem; color: var(--tekst-2);
+}
+.module__footnotes p { margin: 0 0 6px; }
+/* Sama kiri, mis "Näita andmeid tabelina" (vt .data-details summary) — . */
+.module__footnotes-heading { color: var(--tekst-pealkiri); font-weight: 500; font-size: 1rem; margin: 0 0 10px; }
+
+/* laadimise skelett */
+.skeleton { display: grid; gap: 12px; padding-top: 8px; }
+.skeleton__bar { background: var(--skeleton); border-radius: 8px; height: 16px; }
+.skeleton__bar--title { height: 32px; width: 60%; }
+.skeleton__bar--short { width: 30%; }
+.skeleton__block { background: var(--skeleton); border-radius: var(--radius); height: 220px; margin-top: 12px; }
+
+/* viga */
+.error-box {
+  border: 1px solid var(--joon); border-left: 4px solid var(--negatiivne);
+  border-radius: var(--radius); padding: 20px 24px; max-width: 640px;
+}
+.error-box h3 { margin: 0 0 8px; color: var(--negatiivne); font-weight: 500; font-size: 1.1rem; }
+.error-box p { margin: 0 0 16px; }
+.error-box__upload { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--joon); font-size: 0.9rem; }
+.error-box__upload p.muted { margin: 0 0 10px; color: var(--tekst-2); }
+.error-box__upload label { display: block; font-weight: 500; margin-bottom: 6px; }
+.error-box__upload input { font: inherit; max-width: 100%; }
+
+/* ---- lehe jalus ----------------------------------------------------- */
+
+.site-footer {
+  border-top: 1px solid var(--joon);
+  padding: 16px 24px 24px;
+  font-size: 0.85rem; color: var(--tekst-2);
+}
+
+/* ---- kitsas ekraan -------------------------------------------------- */
+
+@media (max-width: 767px) {
+  .site-header { padding: 16px; }
+  .site-header h1 { font-size: 1.6875rem; }  /* 1.35rem × 1,25 */
+  .layout { grid-template-columns: 1fr; min-height: 0; }
+  .panel-list { position: static; max-height: none; overflow-y: visible; border-bottom: 1px solid var(--joon); padding: 0; }
+  .dataset__button { padding: 14px 16px 4px 20px; }
+  .dataset__footer { padding: 2px 16px 14px 20px; }
+  .panel-content { border-left: none; padding: 20px 16px 40px; }
+  .back-link { display: inline-block; }
+  .site-footer { padding: 16px; }
+  /* Mitme veeruga andmetabel kitsal ekraanil (320 px): tabel keritav, leht mitte. Padding hoiab fookusjoone nähtaval. */
+  .data-details { overflow-x: auto; padding: 3px; margin-left: -3px; margin-right: -3px; }
+}
+
+/* ---- printimine ----------------------------------------------------- */
+
+.print-only { display: none; }
+
+@media print {
+  @page { margin: 15mm; }
+  html, body { font-size: 11pt; }
+  .skip-link, .panel-list, .back-link, .filters, .dataset__status, .site-header__views,
+  .module__status, .btn, .error-box__upload, .data-details summary, .tooltip,
+  .ai-box, .ai-toast { display: none !important; }
+  .print-only { display: block; }
+
+  .site-header { padding: 0 0 8px; }
+  .layout { display: block; min-height: 0; }
+  .panel-content { border-left: none; padding: 12px 0 0; }
+  .site-footer { padding: 8px 0 0; }
+
+  /* taustavärvid (callout, sildid) ka printides */
+  .callout, .pill, .kpi, svg.chart { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .kpi-row, .kpi, .callout, .chart-section, .data-table tr { break-inside: avoid; }
+  .chart-section h3 { break-after: avoid; }
+
+  a { color: inherit; text-decoration: none; }
+  .module__footnotes a::after, .site-footer a::after { content: " (" attr(href) ")"; font-size: 0.85em; word-break: break-all; }
+  .module__footnotes a span, .site-footer a span { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 2.4s; }
+  html { scroll-behavior: auto; }
+}
+
+.site-footer p { margin: 0; max-width: 72em; }
+.site-footer p + p { margin-top: 8px; }

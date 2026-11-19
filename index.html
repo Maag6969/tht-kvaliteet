@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="et">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tervishoiuteenuste kvaliteedi näidikulaud</title>
+<meta name="description" content="Tervishoiuteenuste kvaliteedi andmed reaalajas avalikest terviseandmebaasidest (TAI, Eurostat, OECD jt).">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<!-- Lingi eelvaade (e-post, sõnumirakendused) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="et_EE">
+<meta property="og:title" content="Tervishoiuteenuste kvaliteedi näidikulaud">
+<meta property="og:description" content="Tervishoiuteenuste kvaliteedi andmed reaalajas avalikest terviseandmebaasidest (TAI, Eurostat, OECD jt).">
+<meta property="og:url" content="https://maag6969.github.io/tht-kvaliteet/">
+<meta name="twitter:card" content="summary">
+<!--
+  Content Security Policy: skriptid, stiilid ja fondid ainult omalt lehelt; päringud ainult nimetatud andmeallikatele ja loendurile.
+  Uue andmeallika lisamisel lisa selle aadress connect-src alla. style-src on range: HTML-is ei tohi olla style="…" atribuuti.
+  Meta-tag ei toeta frame-ancestors'i (GitHub Pages ei lase HTTP-päiseid seadistada).
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://statistika.tai.ee https://ec.europa.eu https://sdmx.oecd.org https://abacus.jasoncameron.dev; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#content">Liigu sisu juurde</a>
+
+<header class="site-header">
+  <div class="site-header__title">
+    <h1>Tervishoiuteenuste kvaliteedi näidikulaud</h1>
+    <p class="site-header__views" id="view-count" hidden></p>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="panel-list" aria-label="Andmestikud">
+    <div class="list-toolbar" id="view-toolbar" role="group" aria-label="Loendi vaade">
+      <button type="button" class="view-toggle is-active" data-mode="yld" aria-pressed="true" aria-controls="dataset-list">Üldvaade</button>
+      <button type="button" class="view-toggle" data-mode="strat" aria-pressed="false" aria-controls="dataset-list">Strateegiavaade</button>
+      <button type="button" class="view-toggle" data-mode="future" aria-pressed="false" aria-controls="dataset-list">HSPA-vaade</button>
+    </div>
+    <div id="dataset-list"></div>
+  </nav>
+
+  <main class="panel-content" id="content" tabindex="-1" aria-live="polite" aria-busy="false"></main>
+</div>
+
+<footer class="site-footer" id="site-footer">
+  <p>Andmed: avalikud terviseandmebaasid (TAI, Eurostat, OECD) — allikaviide iga andmestiku juures</p>
+</footer>
+
+<script src="js/core.js"></script>
+<script src="js/tables/eurostat-preventable-mortality.js"></script>
+<script src="js/tables/eurostat-treatable-mortality.js"></script>
+<script src="js/tables/oecd-ami-mortality.js"></script>
+<script src="js/tables/oecd-stroke-mortality.js"></script>
+<script src="js/tables/eurostat-silc-common.js"></script>
+<script src="js/tables/eurostat-unmet-needs.js"></script>
+<script src="js/tables/oecd-avoidable-admissions.js"></script>
+<script src="js/tables/oecd-patient-experience.js"></script>
+<script src="js/tables/oecd-cost-barriers.js"></script>
+<script src="js/tables/eurostat-unmet-dental.js"></script>
+<script src="js/tables/eurostat-health-income.js"></script>
+<script src="js/tables/pt01.js"></script>
+<script src="js/tables/pt05.js"></script>
+<script src="js/tables/pt06.js"></script>
+<script src="js/tables/pt07.js"></script>
+<script src="js/tables/tht001.js"></script>
+<script src="js/tables/tht014.js"></script>
+<script src="js/tables/tht022.js"></script>
+<script src="js/tables/tto10.js"></script>
+<script src="js/tables/te753.js"></script>
+<script src="js/tables/te754.js"></script>
+<script src="js/tables/oe0452.js"></script>
+<script src="js/tables/oe0454.js"></script>
+<script src="js/tables/ra02.js"></script>
+<script src="js/tables/tku02.js"></script>
+<script src="js/hspa.js"></script>
+<script src="js/module.js"></script>
+<script src="js/ai-prompt.js"></script>
+<script src="js/usage.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
