@@ -121,6 +121,14 @@ a:hover { text-decoration-thickness: 2px; }
 }
 .site-header__views { margin: 2px 0 0; font-size: 0.875rem; color: var(--tekst-2); font-variant-numeric: tabular-nums; }
 .site-header__views[hidden] { display: none; }
+/* Pealkiri ja selle kõrval „Avaleht“ (19.11.2026): link viib avalehele (tühi olek, nagu lehe esmakordsel avamisel) */
+.site-header__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; }
+.home-link {
+  font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--som-tumesinine); text-decoration: underline; text-underline-offset: 3px;
+}
+.home-link:hover { text-decoration-thickness: 2px; }
+.home-link:focus-visible { outline: 2px solid var(--som-keskmine-sinine); outline-offset: 3px; border-radius: 2px; }
 
 /* ---- paneelid ------------------------------------------------------ */
 
@@ -292,27 +300,29 @@ a:hover { text-decoration-thickness: 2px; }
 .module__topbar { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: 4px 14px; margin: 0 0 4px; }
 /* staatustekst võib murduda kaheks reaks, AI-nupud jäävad samale reale paremale */
 .module__topbar .module__status { font-size: 0.78rem; line-height: 1.45; flex: 1 1 auto; min-width: 0; }
-.module__topbar .ai-box { flex: 0 0 auto; max-width: 100%; }   /* kitsas aken: silt + nupud murduvad, ei ulatu üle serva */
-/* teate pikk tekst ei tohi AI-kasti (ja ülemise rea) laiust määrata: width 0 + min-width 100% = murdub kasti laiusesse */
-.module__topbar .ai-box__msg { flex-basis: 100%; width: 0; min-width: 100%; }
+/* AI-nupud on lehe päises (19.11.2026), mitte igas aruandes: kitsas aken: silt + nupud murduvad, ei ulatu üle serva */
+.site-header .ai-box { flex: 0 1 auto; max-width: 100%; }
+/* teate pikk tekst ei tohi AI-kasti laiust määrata: width 0 + min-width 100% = murdub kasti laiusesse */
+.site-header .ai-box__msg { flex-basis: 100%; width: 0; min-width: 100%; }
 @media (max-width: 700px) {
   .module__topbar { flex-wrap: wrap; }
   /* Telefon: silt oma reale, kolm nuppu ühes reas, sõrmele vähemalt 40 px kõrged */
-  .module__topbar .ai-box { flex: 1 1 100%; width: 100%; }
-  .module__topbar .ai-box__label { flex-basis: 100%; font-size: 0.875rem; }
-  .module__topbar .ai-box__btn { flex: 1 1 0; min-height: 40px; font-size: 0.875rem; }   /* .module__topbar-eesliide: võidab hilisema põhireegli */
+  .site-header .ai-box { flex: 1 1 100%; width: 100%; }
+  .site-header .ai-box__label { flex-basis: 100%; font-size: 0.875rem; }
+  .site-header .ai-box__btn { flex: 1 1 0; min-height: 40px; font-size: 0.875rem; }   /* .site-header-eesliide: võidab hilisema põhireegli */
   .ai-toast__close, .compare-btn, .field select { min-height: 40px; }
 }
 .ai-box { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; }
 .ai-box__label { font-size: 0.875rem; color: var(--tekst-2); }
-.module__topbar .ai-box__label { font-size: 0.78rem; }
+.site-header .ai-box__label { font-size: 0.78rem; }
 /* AI-nupud: väiksemad, valge kiri sinisel taustal ( — varasemate värvide pöördvariant) */
 .ai-box__btn {
   font: inherit; font-size: 0.78rem; font-weight: 500; line-height: 1.3; cursor: pointer;
   padding: 2px 10px; border-radius: 999px;
   color: #fff; background: var(--som-keskmine-sinine); border: 1px solid var(--som-keskmine-sinine);
 }
-.ai-box__btn:hover, .ai-box__btn:focus-visible { background: var(--som-tumesinine); border-color: var(--som-tumesinine); }
+.ai-box__btn:hover:not(:disabled), .ai-box__btn:focus-visible { background: var(--som-tumesinine); border-color: var(--som-tumesinine); }
+.ai-box__btn:disabled { opacity: 0.45; cursor: not-allowed; }
 /* Vaate ja lõike nupud (loendi päis, õdetabelite lüliti) — kontuurnupud, valitud täidetud */
 .view-toggle {
   font: inherit; font-size: 0.875rem; font-weight: 500; cursor: pointer;
@@ -535,7 +545,7 @@ svg.chart .mark:focus-visible { stroke: var(--som-tumesinine); stroke-width: 3; 
 @media print {
   @page { margin: 15mm; }
   html, body { font-size: 11pt; }
-  .skip-link, .panel-list, .back-link, .filters, .dataset__status, .site-header__views,
+  .skip-link, .panel-list, .back-link, .home-link, .filters, .dataset__status, .site-header__views,
   .module__status, .btn, .error-box__upload, .data-details summary, .tooltip,
   .ai-box, .ai-toast { display: none !important; }
   .print-only { display: block; }

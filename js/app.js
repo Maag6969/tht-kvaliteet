@@ -11,8 +11,9 @@
 
   var listEl = document.getElementById("dataset-list");
   var contentEl = document.getElementById("content");
+  var aiBoxEl = document.getElementById("ai-box");   // AI-nupud lehe päises (analüüsivad parajasti avatud aruannet)
 
-  var current = null;      // valitud tabeli kood
+  var current = null;     // valitud tabeli kood
   var requestId = 0;       // vanemate päringute tulemused jäetakse kõrvale
   var states = {};         // filtrivalikud tabeli kaupa (säilivad tabelite vahel liikudes)
   var view = null;         // { config, data, source } — praegu kuvatud moodul
@@ -505,7 +506,7 @@
       "lehe avamisel küsitakse sealt iga andmestiku viimast aastat ja sinu brauser jätab selle 12 tunniks meelde. " +
       "Isikuandmeid ei salvestata ja küpsiseid ei kasutata.</p>" +
       // eraldi lõik rasvases kirjas: AI-analüüs on eraldiseisev teenus, mitte osa näidikulauast
-      '<p class="site-footer__ai"><strong>AI-nupud aruande päises (Claude, ChatGPT, Gemini) kopeerivad lehe andmed ' +
+      '<p class="site-footer__ai"><strong>AI-nupud lehe päises (Claude, ChatGPT, Gemini) kopeerivad avatud aruande andmed ' +
       "(sh valitud filtreid arvestades) koos ettevalmistatud analüüsi prompt'iga sinu lõikelauale ja avavad valitud " +
       "AI-teenuse sinu enda brauseris. Seal kehtivad selle teenuse tingimused vastavalt sinu enda konto võimalustele " +
       "ning saadava analüüsi kvaliteet võib oluliselt sõltuda ka valitud AI-mudelist: paremad mudelid annavad parema " +
@@ -526,6 +527,8 @@
 
   function renderEmpty() {
     view = null;
+    setAiEnabled(false, "Vali enne andmestik");
+    clearAiNotice();
     document.title = BASE_TITLE;
     contentEl.innerHTML =
       '<div class="empty-state">' +
@@ -575,6 +578,8 @@
 
   function renderLoading(config) {
     view = null;
+    setAiEnabled(false, "Andmed laaditakse");
+    clearAiNotice();
     contentEl.setAttribute("aria-busy", "true");
     contentEl.innerHTML =
       backLink() +
@@ -593,6 +598,8 @@
   function renderError(config, err) {
     view = null;
     var info = TAI.describeError(err, config);
+    setAiEnabled(false, "Andmeid ei õnnestunud laadida");
+    clearAiNotice();
     contentEl.setAttribute("aria-busy", "false");
     contentEl.innerHTML =
       backLink() +
@@ -715,15 +722,9 @@
       backLink() +
       '<article class="module">' +
         '<header class="module__head">' +
-          // Ülemine rida: staatusrida väiksemas kirjas + AI-nupud selle järel samal real
+          // Ülemine rida: staatusrida väiksemas kirjas (AI-nupud on alates 19.11.2026 lehe päises, vt aiBoxHtml)
           '<div class="module__topbar">' +
             statusLineHtml(config, source.source === "api" ? "loaded" : "none", tableUpdatedText(data)) +
-            '<div class="ai-box"><span class="ai-box__label">Analüüsi kuvatud andmeid AI-ga:</span>' +
-              TAI.aiTargets.map(function (t) {
-                return '<button type="button" class="ai-box__btn" data-ai="' + t.id + '">' + esc(t.label) + "</button>";
-              }).join("") +
-              '<p class="ai-box__msg" role="status" aria-live="polite"></p>' +
-            "</div>" +
           "</div>" +
           '<h2 tabindex="-1">' + esc(config.fullTitle) + "</h2>" +
           '<p class="module__subtitle">' + esc(TAI.describe(config)) + "</p>" +
@@ -755,6 +756,7 @@
     var body = contentEl.querySelector(".module__body");
     if (!body) return;
     clearAiNotice();
+    setAiEnabled(true);   // avatud aruandel on andmed; päises olevad nupud analüüsivad seda
     var config = view.config;
     var model = TAI.buildModel(config, view.data, stateOf(config));
     var callout = TAI.calloutText(model);
@@ -906,8 +908,27 @@
 
   // Filtri muutes kuvatud lõige muutub, aga lõikelaual on eelmise lõike andmed → vana teade, käsitsi kopeerimise
   // tekstikast, alanurga teade ja Picture-in-Picture aken eemaldatakse (renderBody alguses).
+  /* AI-nupud on lehe päises ja kehtivad avatud aruandele: keelatud, kui aruannet pole või see laeb. */
+  function setAiEnabled(on, reason) {
+    if (!aiBoxEl) return;
+    Array.prototype.forEach.call(aiBoxEl.querySelectorAll("button[data-ai]"), function (b) {
+      b.disabled = !on;
+      if (on) b.removeAttribute("title"); else b.title = reason || "";
+    });
+  }
+
+  /* AI-nupud lehe päises (js/app.js käivitus täidab #ai-box): üks nupukomplekt kogu lehele, mitte igasse aruandesse. */
+  function aiBoxHtml() {
+    return '<span class="ai-box__label">Analüüsi kuvatud andmeid AI-ga:</span>' +
+      TAI.aiTargets.map(function (t) {
+        return '<button type="button" class="ai-box__btn" data-ai="' + t.id + '">' + esc(t.label) + "</button>";
+      }).join("") +
+      '<p class="ai-box__msg" role="status" aria-live="polite"></p>';
+  }
+  if (aiBoxEl) aiBoxEl.innerHTML = aiBoxHtml();
+
   function clearAiNotice() {
-    var box = contentEl.querySelector(".ai-box");
+    var box = aiBoxEl;
     if (box) {
       box.classList.remove("is-active");
       var msg = box.querySelector(".ai-box__msg");
@@ -944,11 +965,26 @@
     return window.open(url, "tai-ai-analysis", "popup=yes,width=" + w + ",height=" + h + ",left=" + left + ",top=" + top);
   }
 
-  contentEl.addEventListener("click", function (evt) {
+  // „Avaleht“ päises: näita avaleht (tühi olek) uuesti laadimata; Ctrl/Shift/keskmise klõpsuga avaneb leht tavaliselt
+  // (href="./"). Brauseri „Tagasi“ viib eelmise aruande juurde (hashchange → select()).
+  var homeLink = document.getElementById("home-link");
+  if (homeLink) {
+    homeLink.addEventListener("click", function (evt) {
+      if (evt.button !== 0 || evt.ctrlKey || evt.shiftKey || evt.altKey || evt.metaKey) return;
+      evt.preventDefault();
+      if (location.hash) history.pushState(null, "", location.pathname + location.search);
+      requestId++;   // pooleli aruande laadimise tulemus jäetakse kõrvale
+      TAI.getTables().forEach(function (t) { setRowStatus(t.code, null); });
+      current = null; setActiveRow(null); renderEmpty();
+      window.scrollTo(0, 0);
+    });
+  }
+
+  aiBoxEl.addEventListener("click", function (evt) {
     var btn = evt.target.closest("button[data-ai]");
     if (!btn || !view) return;
     var target = TAI.aiTargets.filter(function (t) { return t.id === btn.getAttribute("data-ai"); })[0];
-    var box = btn.closest(".ai-box");
+    var box = aiBoxEl;
     var msg = box.querySelector(".ai-box__msg");
     var prompt = TAI.buildAiPrompt(view.config, contentEl);
     // kopeerimine PEAB toimuma enne uue akna avamist: pärast seda ei ole leht enam fookuses ja brauser küsiks luba

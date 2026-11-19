@@ -58,7 +58,7 @@ Näidikulaud ei ole ühegi andmeallika ametlik väljaanne. Ametlikud arvud ja me
   lehe omanik IP-aadresse ei näe. Küpsiseid ei kasutata. Sama teade on lehe jaluses.
 - **Brauseri salvestus:** viimase andmeaasta kontrolli tulemus (tabeli kood, aasta, aeg) jääb 12 tunniks brauseri
   `localStorage`'isse ja märge „juba loendatud“ `sessionStorage`'isse. Isikuandmeid ei salvestata.
-- **AI-nupud** aruande päises (Claude, ChatGPT, Gemini) kopeerivad vaate andmed (valitud filtreid arvestades) koos
+- **AI-nupud** lehe päises (Claude, ChatGPT, Gemini; üks komplekt kogu lehele, nad analüüsivad parajasti avatud aruannet) kopeerivad vaate andmed (valitud filtreid arvestades) koos
   ettevalmistatud analüüsi prompt'iga külastaja lõikelauale ja avavad valitud AI-teenuse külastaja enda brauseris,
   lahti seotuna näidikulaua aknast (`window.opener = null`). Seal kehtivad selle teenuse tingimused külastaja konto
   võimaluste järgi ning analüüsi kvaliteet sõltub valitud AI-mudelist (tasuta teenus võib anda väga halva tulemuse).
