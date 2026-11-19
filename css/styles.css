@@ -172,10 +172,10 @@ a:hover { text-decoration-thickness: 2px; }
 .dataset.is-active::before { background: var(--som-keskmine-sinine); }
 
 .dataset__button {
-  /* Tihendatud veelgi: 16/4 → 13/3 → 9/2. */
+  /* Tihendatud veelgi: 16/4 → 13/3 → 9/2; 19.11.2026: alumine 8, sest allikarida on ainult valitud real (vt .dataset__footer). */
   display: grid; grid-template-columns: 1fr auto; gap: 1px 12px; align-items: center;
   width: 100%;
-  padding: 9px 20px 2px 24px;
+  padding: 9px 20px 8px 24px;
   background: none; border: none; text-align: left; cursor: pointer;
   font: inherit; color: inherit;
 }
@@ -197,9 +197,11 @@ a:hover { text-decoration-thickness: 2px; }
   /* Allikas-rida 9p, praegune värv; tihendatud veelgi 2. voorus
      (2/16 → 1.6/13 → 1/8), line-height 1.5 → 1.2. */
   display: flex; flex-wrap: wrap; align-items: center; gap: 2px 16px;
-  padding: 1px 20px 8px 24px;
+  padding: 0 20px 8px 24px;
   font-size: 0.75rem; color: var(--tekst-2); line-height: 1.2;
 }
+/* 19.11.2026 (nagu M2-s): allikarida (link, vaatamiste arv, laadimise olek) ainult valitud real; allikas on ka aruande päises ja jaluses */
+.dataset:not(.is-active) .dataset__footer { display: none; }
 .dataset__views { font-variant-numeric: tabular-nums; }
 .dataset__views[hidden] { display: none; }
 .dataset__status { display: inline-flex; align-items: center; gap: 6px; }
@@ -517,8 +519,8 @@ svg.chart .mark:focus-visible { stroke: var(--som-tumesinine); stroke-width: 3; 
   .site-header h1 { font-size: 1.6875rem; }  /* 1.35rem × 1,25 */
   .layout { grid-template-columns: 1fr; min-height: 0; }
   .panel-list { position: static; max-height: none; overflow-y: visible; border-bottom: 1px solid var(--joon); padding: 0; }
-  .dataset__button { padding: 14px 16px 4px 20px; }
-  .dataset__footer { padding: 2px 16px 14px 20px; }
+  .dataset__button { padding: 12px 16px 12px 20px; }
+  .dataset__footer { padding: 0 16px 12px 20px; }
   .panel-content { border-left: none; padding: 20px 16px 40px; }
   .back-link { display: inline-block; }
   .site-footer { padding: 16px; }
