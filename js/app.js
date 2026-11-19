@@ -69,9 +69,8 @@
           '<span class="dataset__desc" id="ds-desc-' + esc(t.code) + '">' + esc(t.country ? t.country + ", " : "") + periodHtml(t) + rtaMark + "</span>" +
           '<span class="dataset__chevron" aria-hidden="true">›</span>' +
         "</button>" +
+        // 19.11.2026: allikalinki menüüs pole (allikas on aruande päises ja jaluses); valitud real vaatamiste arv ja olek
         '<div class="dataset__footer">' +
-          '<a href="' + esc(TAI.sourceUrl(t)) + '" target="_blank" rel="noopener">Allikas: ' + esc(TAI.sourceLabel(t)) + " " + esc(t.code) +
-            ' <span aria-hidden="true">↗</span><span class="visually-hidden">(avaneb uues aknas)</span></a>' +
           '<span class="dataset__views" hidden></span>' +
           '<span class="dataset__status" role="status"></span>' +
         "</div>" +
