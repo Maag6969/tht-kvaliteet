@@ -977,6 +977,8 @@
     // uus aken ei saa viidata tagasi näidikulauale (window.opener)
     if (opened) opened.opener = null;
     showAiNotice(copied ? aiCopiedText() : msg.textContent, opened);
+
+    usage.track(usage.keyAction(view.config.code, "ai-" + target.id));
   });
 
   // filtrid: muutmine laadib andmed kohe (API) või arvutab failist uuesti

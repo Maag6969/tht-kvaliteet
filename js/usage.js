@@ -8,7 +8,7 @@
  *   avaleht                          avalehe avamised (iga avamine)
  *   ds-<KOOD>                        andmestiku avamine (andmed laaditud edukalt)
  *   f-<KOOD>-<filter>-<väärtus>      filtri valik kasutaja poolt (nt f-ETU41-sugu-vordlus)
- *   a-<KOOD>-<tegevus>               lisategevus: andmetabel | allikas | prindi | fail
+ *   a-<KOOD>-<tegevus>               lisategevus: andmetabel | allikas | prindi | fail | ai-claude | ai-chatgpt | ai-gemini
  *
  * Sama sündmus loetakse ühes brauseriseansis üks kord (sessionStorage); avalehe avamine iga kord.
  * Arvu suurendatakse ainult avaldatud lehel; mujal (arendus) ainult loetakse.
@@ -33,7 +33,13 @@
   // PARAM_NAMES alla; muu (mitte-Sugu) filter töötab juba üldiselt (vt keyFilter).
   var PARAM_NAMES = { Taustatunnus: "taustatunnus", "Vanuserühm": "vanus", Sugu: "sugu" };
   var SEX_VALUES = { "0": "kokku", "1": "mehed", "2": "naised", compare: "vordlus" };
-  var ACTIONS = ["andmetabel", "allikas", "prindi", "fail"];
+  var ACTIONS = ["andmetabel", "allikas", "prindi", "fail", "ai-claude", "ai-chatgpt", "ai-gemini"];
+
+  // Abacuse võtmes on lubatud ainult tähed, numbrid ning _ - . : täpitähed tehakse lihtsaks (ä → a), muu märk → "-"
+  var TRANSLIT = { "ä": "a", "ö": "o", "õ": "o", "ü": "u", "š": "s", "ž": "z", "Ä": "A", "Ö": "O", "Õ": "O", "Ü": "U", "Š": "S", "Ž": "Z" };
+  function keyPart(text) {
+    return String(text).replace(/\+/g, "plus").replace(/[äöõüšžÄÖÕÜŠŽ]/g, function (c) { return TRANSLIT[c]; }).replace(/[^A-Za-z0-9_.-]/g, "-");
+  }
 
   function seenThisSession(key) {
     try {
@@ -77,7 +83,7 @@
     keyFilter: function (code, varCode, value) {
       var name = PARAM_NAMES[varCode] || varCode.toLowerCase();
       var val = varCode === "Sugu" ? SEX_VALUES[value] : value;
-      return "f-" + code + "-" + name + "-" + val;
+      return "f-" + code + "-" + keyPart(name) + "-" + keyPart(val);
     },
 
     /** Kõik loendurid koos inimloetava kirjeldusega (statistikalehe ja loendurite loomise jaoks). */
@@ -100,7 +106,8 @@
         });
       });
       TAI.getTables().forEach(function (t) {
-        var names = { andmetabel: "andmetabeli avamine", allikas: "allikalingi klõps", prindi: "printimine", fail: "faili üleslaadimine" };
+        var names = { andmetabel: "andmetabeli avamine", allikas: "allikalingi klõps", prindi: "printimine", fail: "faili üleslaadimine",
+          "ai-claude": "AI-analüüs (Claude)", "ai-chatgpt": "AI-analüüs (ChatGPT)", "ai-gemini": "AI-analüüs (Gemini)" };
         ACTIONS.forEach(function (a) {
           list.push({ key: usage.keyAction(t.code, a), group: "Lisategevused", table: t.code, label: t.code + " · " + names[a] });
         });
