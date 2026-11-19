@@ -1200,11 +1200,29 @@
     Array.prototype.forEach.call(rowsOf(code), function (row) { showCount(row.querySelector(".dataset__views"), value); });
   }
 
+  /* Loendurite lugemine: avaleht esimesena, siis andmestike arvud järjekorras (3 korraga, ajutise tõrke korral üks kordus),
+     sest loenduriteenus vastab vahel veaga, kui talle tuleb korraga kümneid päringuid. */
   function loadViewCount() {
-    usage.track(usage.HOME_KEY, { everyTime: true }).then(function (v) { showCount(document.getElementById("view-count"), v); });
-    TAI.getTables().forEach(function (t) {
-      usage.get(usage.keyDataset(t.code)).then(function (v) { showRowCount(t.code, v); });
-    });
+    usage.track(usage.HOME_KEY, { everyTime: true }).then(function (v) {
+      if (v !== undefined) return v;
+      // ajutine tõrge: loe arv hiljem uuesti (ilma suurendamata, et avamist mitte topelt lugeda)
+      return new Promise(function (resolve) { setTimeout(resolve, 1500); }).then(function () { return usage.get(usage.HOME_KEY); });
+    }).then(function (v) { showCount(document.getElementById("view-count"), v); });
+    var queue = TAI.getTables().slice(), WORKERS = 3;
+    function readCount(t, retry) {
+      return usage.get(usage.keyDataset(t.code)).then(function (v) {
+        if (v === undefined && retry) {
+          return new Promise(function (resolve) { setTimeout(resolve, 1500); }).then(function () { return readCount(t, false); });
+        }
+        showRowCount(t.code, v);
+      });
+    }
+    function worker() {
+      var t = queue.shift();
+      if (!t) return Promise.resolve();
+      return readCount(t, true).then(worker);
+    }
+    for (var i = 0; i < WORKERS; i++) worker();
   }
 
   // andmetabeli avamine (toggle ei mullitu → capture)
