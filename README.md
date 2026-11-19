@@ -58,7 +58,10 @@ Näidikulaud ei ole ühegi andmeallika ametlik väljaanne. Ametlikud arvud ja me
   lehe omanik IP-aadresse ei näe. Küpsiseid ei kasutata. Sama teade on lehe jaluses.
 - **Brauseri salvestus:** viimase andmeaasta kontrolli tulemus (tabeli kood, aasta, aeg) jääb 12 tunniks brauseri
   `localStorage`'isse ja märge „juba loendatud“ `sessionStorage`'isse. Isikuandmeid ei salvestata.
-- **AI-nupud** kopeerivad vaate andmed külastaja lõikelauale ja avavad valitud AI-teenuse (Claude, ChatGPT,
-  Gemini) külastaja enda brauseris, lahti seotuna näidikulaua aknast (`window.opener = null`).
+- **AI-nupud** aruande päises (Claude, ChatGPT, Gemini) kopeerivad vaate andmed (valitud filtreid arvestades) koos
+  ettevalmistatud analüüsi prompt'iga külastaja lõikelauale ja avavad valitud AI-teenuse külastaja enda brauseris,
+  lahti seotuna näidikulaua aknast (`window.opener = null`). Seal kehtivad selle teenuse tingimused külastaja konto
+  võimaluste järgi ning analüüsi kvaliteet sõltub valitud AI-mudelist (tasuta teenus võib anda väga halva tulemuse).
+  AI poolne kirjeldav analüüs on eraldiseisev teenus, mille tulemus ei ole seotud näidikulauaga. Sama teade on lehe jaluses.
 - **Sisupoliitika (CSP)** `index.html`-is: skriptid, stiilid ja fondid ainult lehelt endalt; päringud ainult
   andmeallikatele (TAI, Eurostat, OECD) ja loendurile. Väliseid skripte ega Google Fonts'i ei kasutata.
