@@ -62,6 +62,8 @@ Näidikulaud ei ole ühegi andmeallika ametlik väljaanne. Ametlikud arvud ja me
   ettevalmistatud analüüsi prompt'iga külastaja lõikelauale ja avavad valitud AI-teenuse külastaja enda brauseris,
   lahti seotuna näidikulaua aknast (`window.opener = null`). Seal kehtivad selle teenuse tingimused külastaja konto
   võimaluste järgi ning analüüsi kvaliteet sõltub valitud AI-mudelist (tasuta teenus võib anda väga halva tulemuse).
-  AI poolne kirjeldav analüüs on eraldiseisev teenus, mille tulemus ei ole seotud näidikulauaga. Sama teade on lehe jaluses.
+  AI poolt genereeritud kirjeldav analüüs on seega eraldiseisev tegevus, mille tulemuse kvaliteet ega õigsus ei ole seotud
+  siinsete näidikulaudadega ega siin kasutatud andmeallikatega. AI-ga loodud sisu eest vastutab selle sisu genereerinud ja
+  seda sisu kasutav isik. Sama teade on lehe jaluses.
 - **Sisupoliitika (CSP)** `index.html`-is: skriptid, stiilid ja fondid ainult lehelt endalt; päringud ainult
   andmeallikatele (TAI, Eurostat, OECD) ja loendurile. Väliseid skripte ega Google Fonts'i ei kasutata.

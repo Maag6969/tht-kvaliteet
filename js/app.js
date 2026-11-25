@@ -510,8 +510,10 @@
       "(sh valitud filtreid arvestades) koos ettevalmistatud analüüsi prompt'iga sinu lõikelauale ja avavad valitud " +
       "AI-teenuse sinu enda brauseris. Seal kehtivad selle teenuse tingimused vastavalt sinu enda konto võimalustele " +
       "ning saadava analüüsi kvaliteet võib oluliselt sõltuda ka valitud AI-mudelist: paremad mudelid annavad parema " +
-      "kvaliteediga analüüsi, tasuta teenus võib anda väga halva tulemuse. AI poolne kirjeldav analüüs on eraldiseisev " +
-      "teenus, mille tulemus ei ole seotud siinsete näidikulaudadega.</strong></p>";
+      "kvaliteediga analüüsi, tasuta teenus võib anda väga halva tulemuse. AI poolt genereeritud kirjeldav analüüs on " +
+      "seega eraldiseisev tegevus, mille tulemuse kvaliteet ega õigsus ei ole seotud siinsete näidikulaudadega ega siin " +
+      "kasutatud andmeallikatega. AI-ga loodud sisu eest vastutab selle sisu genereerinud ja seda sisu kasutav isik." +
+      "</strong></p>";
   }
 
   /* Allika taaskasutustingimuste märge aruande metaandmetes: Eurostat (CC BY 4.0) nõuab töötlemise märget ja lauset,
