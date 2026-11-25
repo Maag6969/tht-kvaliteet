@@ -57,7 +57,7 @@
                  "Arst kaasas raviotsustesse"],
         defaultValue: "HPREXCLA"
       },
-      SEX: { label: "Sugu", values: ["_T", "M", "F"], labels: ["Mehed ja naised", "Mehed", "Naised"], totalValue: "_T" }
+      SEX: { label: "Sugu", values: ["_T", "M", "F"], labels: ["Kokku", "Mehed", "Naised"], totalValue: "_T" }
     },
 
     filters: ["MEASURE", "SEX"],

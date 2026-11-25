@@ -34,7 +34,7 @@
       },
       Vanuserühm: {
         label: "Vanuserühm",
-        sliceLabels: ["kõik"],   // kokku-rida lõikes „Vanuserühm: kõik" (teised väärtused nagu labels)
+        sliceLabels: ["kokku"],   // kokku-rida lõikes „Vanuserühm: kokku" (teised väärtused nagu labels)
         values: ["0", "1", "2", "3", "4", "5", "6"],
         labels: ["Vanuserühmad kokku", "15-19", "20-29", "30-39", "40-49", "50-59", "60-74"],
         totalValue: "0"

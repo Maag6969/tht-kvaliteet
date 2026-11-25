@@ -16,11 +16,11 @@
       return {
         label: "Sissetulek",
         values: ["TOTAL"].concat(QUINTILES),
-        labels: ["Kõik sissetulekurühmad", "1. kvintiil (madalaim sissetulek)", "2. kvintiil", "3. kvintiil",
+        labels: ["Kokku", "1. kvintiil (madalaim sissetulek)", "2. kvintiil", "3. kvintiil",
                  "4. kvintiil", "5. kvintiil (kõrgeim sissetulek)"],
         totalValue: "TOTAL",
         // valitud lõikes „Sissetulek: 1. kvintiil (madalaim)"
-        sliceLabels: ["kõik rühmad", "1. kvintiil (madalaim)", "2. kvintiil", "3. kvintiil", "4. kvintiil",
+        sliceLabels: ["kokku", "1. kvintiil (madalaim)", "2. kvintiil", "3. kvintiil", "4. kvintiil",
                       "5. kvintiil (kõrgeim)"]
       };
     },

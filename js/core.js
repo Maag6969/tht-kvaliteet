@@ -127,7 +127,7 @@
     return {
       label: "Sugu",
       values: ["0", "1", "2"],
-      labels: ["Mehed ja naised", "Mehed", "Naised"],
+      labels: ["Kokku", "Mehed", "Naised"],
       totalValue: "0",
       elimination: !!elimination
     };

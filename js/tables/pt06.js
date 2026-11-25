@@ -48,7 +48,7 @@
     },
 
     /*
-     * trend     — kõik aastad, vaikimisi "Mehed ja naised" kokku (kasutaja saab filtrist vahetada)
+     * trend     — kõik aastad, vaikimisi sugu „Kokku“ (kasutaja saab filtrist vahetada)
      * breakdown — viimane aasta, mehed ja naised kõrvuti
      */
     queries: function (state) {

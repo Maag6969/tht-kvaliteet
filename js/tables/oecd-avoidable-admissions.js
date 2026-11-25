@@ -57,7 +57,7 @@
         labels: ["Astma ja KOK", "Astma", "Krooniline obstruktiivne kopsuhaigus (KOK)", "Südamepuudulikkus", "Diabeet"],
         defaultValue: "ASCOCOMP"
       },
-      SEX: { label: "Sugu", values: ["_T", "M", "F"], labels: ["Mehed ja naised", "Mehed", "Naised"], totalValue: "_T" }
+      SEX: { label: "Sugu", values: ["_T", "M", "F"], labels: ["Kokku", "Mehed", "Naised"], totalValue: "_T" }
     },
 
     filters: ["MEASURE", "SEX"],

@@ -49,9 +49,9 @@
       Sugu: TAI.sexVar(false),
       Vanuserühm: {
         label: "Vanuserühm",
-        sliceLabels: ["kõik (20 ja vanemad)"],   // kokku-rida lõikes (teised väärtused nagu labels)
+        sliceLabels: ["kokku (20 ja vanemad)"],   // kokku-rida lõikes (teised väärtused nagu labels)
         values: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-        labels: ["Kõik vanuserühmad (20 ja vanemad)", "20–24", "25–29", "30–34", "35–39", "40–44", "45–49",
+        labels: ["Vanuserühmad kokku (20 ja vanemad)", "20–24", "25–29", "30–34", "35–39", "40–44", "45–49",
                  "50–54", "55–59", "60–64", "65 ja vanemad"],
         totalValue: "0"
       }
